@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.houpu.dao.UserDao" >
+  <resultMap id="BaseResultMap" type="com.houpu.entity.User" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="pass_word" property="passWord" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="levels" property="levels" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="VARCHAR" />
+    <result column="update_user" property="updateUser" jdbcType="VARCHAR" />
+    <result column="update_time" property="updateTime" jdbcType="VARCHAR" />
+  </resultMap>
+  <!--验证用户名是否存在-->
+  <select id="loginByName" resultMap="BaseResultMap"> 
+  		select * from t_user where  status=0 and user_name=#{userName}
+  </select>
+  <!--用户登录-->
+  <select id="login" resultMap="BaseResultMap">
+  		select * from t_user where user_name=#{userName} and pass_word=#{passWord}
+  </select>
+  <!--查询所有-->
+  <select id="selectAll" resultMap="BaseResultMap">
+  		select * from t_user where status=0
+  </select>
+  <!--单行查询-->
+  <select id="selectById" resultMap="BaseResultMap">
+  		select * from t_user where id=#{id}
+  </select>
+  <!--添加数据-->
+  <insert id="insertUser">
+  		insert into t_user(user_name,pass_word,phone,sex,remark,levels,status,create_user,create_time,update_user,update_time)
+  		values(#{userName},#{passWord},#{phone},#{sex},#{remark},'普通用户',0,#{createUser},#{createTime},#{updateUser},#{updateTime})
+  </insert>
+  <!--删除数据-->
+  <update id="updateStaff">
+        	update t_user set status=1 where id=#{id}
+  </update>
+  <!--修改数据-->
+  <update id="updateUser">
+        	update t_user set user_name=#{userName},pass_word=#{passWord},phone=#{phone},sex=#{sex},remark=#{remark},levels=#{levels},
+        	create_user=#{createUser},create_time=#{createTime},update_user=#{updateUser},update_time=#{updateTime} where id=#{id}
+  </update>
+  <!--模糊查询-->
+    <select id="mohucx" resultMap="BaseResultMap">
+  		select * from t_user where 1=1	
+  		<if test="user_name != null || userName !=''">
+  			and user_name like concat('%',#{userName},'%')
+  		</if>
+  </select>
+   <select id="mohucx1" resultMap="BaseResultMap">
+  		select * from t_user where 1=1
+  		<if test="levels != null || levels !=''">
+  			and levels like concat('%',#{levels},'%')
+  		</if>
+  </select>
+</mapper>
